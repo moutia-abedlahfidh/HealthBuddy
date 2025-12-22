@@ -1,0 +1,8 @@
+class NotificationItem {
+  final String title;
+  final String message;
+  final String dateTime;
+
+  NotificationItem(
+      {required this.title, required this.message, required this.dateTime});
+}

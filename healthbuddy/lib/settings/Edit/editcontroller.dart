@@ -1,0 +1,27 @@
+
+
+import 'package:flutter/material.dart';
+import 'package:healthbuddy/settings/Edit/editservice.dart';
+
+class EditController extends ChangeNotifier {
+ EditService service = EditService() ;
+
+ late final nameController = TextEditingController();
+  late final emailController = TextEditingController();
+  late final weightController = TextEditingController();
+  late final heightController = TextEditingController();
+  late final ageController = TextEditingController();
+
+  EditController() {
+    loadEdit();
+  }
+
+  void loadEdit() async{
+    var steps = await service.getDetails();
+    nameController.text = steps['name'] ;
+    emailController.text = steps['email'] ;
+    weightController.text = steps['gewicht'].toString() ;
+    heightController.text = steps['grose'].toString() ;
+    ageController.text = steps['alt'].toString() ;
+  }
+}
