@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthbuddy/Home/homescreen.dart';
+import 'package:healthbuddy/chatbot/chatbot_screen.dart';
 import 'package:healthbuddy/graphik/graphikcontroller.dart';
 import 'package:healthbuddy/notifications/notificationscreen.dart';
 import 'package:healthbuddy/settings/settings_screen.dart';
@@ -76,7 +77,7 @@ class GrafikScreen extends StatelessWidget {
             }else if (index == 2) {
               Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  NotificationScreen()),
+          MaterialPageRoute(builder: (context) =>  ChatPage()),
         );
               }else if (index==0) {
               Navigator.push(
@@ -91,7 +92,7 @@ class GrafikScreen extends StatelessWidget {
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Statistik'),
-            BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Benach'),
+            BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'ChatBot'),
             BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Einstellungen'),
           ],
         ),
@@ -281,7 +282,16 @@ class chartPlaceholder extends StatelessWidget {
               children: data.map((d) {
                 // Skaliert die Höhe des Balkens relativ zum maximalen Schrittwert
                 var value = option == 0 ? d.steps : (option==1 ? d.calories : d.km);
-                double barHeight = (value / maxSteps) * 150;
+                // Ensure maxSteps is not zero
+                double safeMax = maxSteps > 0 ? maxSteps : 1;
+
+                // Calculate bar height
+                double barHeight = (value / safeMax) * 150;
+
+                // Optional: make sure the bar has a minimum height if value > 0
+                if (value > 0 && barHeight < 5) {
+                  barHeight = 5;
+                }
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [

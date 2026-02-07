@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:healthbuddy/graphik/graphikscreen.dart';
 import 'package:healthbuddy/home/homecontroller.dart';
 import 'package:healthbuddy/kalorienaufnahmen/kalorien_screen.dart';
-import 'package:healthbuddy/notifications/notificationscreen.dart';
+import 'package:healthbuddy/chatbot/chatbot_screen.dart';
 import 'package:healthbuddy/schafseite/sclafscreen.dart';
 import 'package:healthbuddy/settings/settings_screen.dart';
 import 'package:healthbuddy/trainingswipe/training_swipe_screen.dart';
@@ -283,7 +283,7 @@ class Homescreen extends StatelessWidget {
             }else if (index == 2) {
               Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  NotificationScreen()),
+          MaterialPageRoute(builder: (context) =>  ChatPage()),
         );
               }else if (index==1) {
               Navigator.push(
@@ -298,7 +298,7 @@ class Homescreen extends StatelessWidget {
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Statistik'),
-            BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Benach'),
+            BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'ChatBot'),
             BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Einstellungen'),
           ],
         ),
