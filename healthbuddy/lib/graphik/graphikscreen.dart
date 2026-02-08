@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:healthbuddy/Home/homescreen.dart';
 import 'package:healthbuddy/chatbot/chatbot_screen.dart';
 import 'package:healthbuddy/graphik/graphikcontroller.dart';
-import 'package:healthbuddy/notifications/notificationscreen.dart';
 import 'package:healthbuddy/settings/settings_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';

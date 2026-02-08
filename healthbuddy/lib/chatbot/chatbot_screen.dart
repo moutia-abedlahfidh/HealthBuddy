@@ -1,9 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:healthbuddy/chatbot/chatbot_controller.dart';
 import 'package:healthbuddy/graphik/graphikscreen.dart';
-import 'package:healthbuddy/home/homescreen.dart';
-import 'package:healthbuddy/notifications/notificationscreen.dart';
+import 'package:healthbuddy/home/homescreen.dart'; 
 import 'package:healthbuddy/settings/settings_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +16,7 @@ class ChatPage extends StatelessWidget {
       child: Consumer<ChatController>(builder: (context, controller, child) {
         return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Chatbot"),
         centerTitle: true,
       ),
@@ -69,15 +68,11 @@ class ChatPage extends StatelessWidget {
             ),
           ),
 
-          SafeArea(
-  child: Container(
+          Container(
     padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-    child: Row(
-      children: [
-        
-
-        /// Topic Buttons
-        Expanded(child: SingleChildScrollView(
+    
+    child: Column(children: [
+      SizedBox(height: 65,child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
           children: (controller.category == 1 ? controller.options_questions_Sport : controller.category == 2 ? controller.options_questions_Ernahrung : controller.category == 3 ? controller.options_questions_Schlaf : controller.options).map((topic) {
@@ -85,7 +80,14 @@ class ChatPage extends StatelessWidget {
               padding: const EdgeInsets.only(right: 4),
               child: GestureDetector(
                 onTap: () {
-                  controller.changeOptions(topic);
+                  if (controller.options_is_opened == false) {
+                    controller.changeOptions(topic);
+                    controller.options_is_opened = true ;
+                  }else {
+                    controller.text.text = topic;
+                    controller.notifyListeners();
+                  }
+                  
                   
                 },
                 child: Container(
@@ -106,13 +108,21 @@ class ChatPage extends StatelessWidget {
           }).toList(),
         ),
         )),
-
-        const SizedBox(width: 8),
+      Row(
+      children: [
+        Flexible(
+      child: TextField(
+        controller: controller.text,
+        decoration: const InputDecoration(
+          hintText: "Type a message...",
+        ),
+      ),
+    ),
 
         /// Send Button
         GestureDetector(
-          onTap: () {
-            controller.sendMessage(controller.text.text);
+          onTap: () {            
+            controller.sendMessage();
             controller.text.clear();
           },
           child: Container(
@@ -129,13 +139,13 @@ class ChatPage extends StatelessWidget {
         ),
       ],
     ),
+      ]),
   ),
-)
         ],
       ),
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
+         topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
         ),
         child: BottomNavigationBar(
@@ -150,7 +160,7 @@ class ChatPage extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (context) =>  const SettingsScreen()),
         );
-            }else if (index == 2) {
+            }else if (index == 1) {
               Navigator.push(
           context,
           MaterialPageRoute(builder: (context) =>  const GrafikScreen()),
@@ -174,7 +184,6 @@ class ChatPage extends StatelessWidget {
         ),
       )
     );
-  ;
       },),
     );
   }

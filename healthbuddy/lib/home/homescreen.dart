@@ -3,6 +3,7 @@ import 'package:healthbuddy/graphik/graphikscreen.dart';
 import 'package:healthbuddy/home/homecontroller.dart';
 import 'package:healthbuddy/kalorienaufnahmen/kalorien_screen.dart';
 import 'package:healthbuddy/chatbot/chatbot_screen.dart';
+import 'package:healthbuddy/planning/calendar_page.dart';
 import 'package:healthbuddy/schafseite/sclafscreen.dart';
 import 'package:healthbuddy/settings/settings_screen.dart';
 import 'package:healthbuddy/trainingswipe/training_swipe_screen.dart';
@@ -30,7 +31,16 @@ class Homescreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                
+                Row(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
                   "Home",
                   style: TextStyle(
                     color: Colors.black87,
@@ -38,6 +48,7 @@ class Homescreen extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
+                        ),
                 const SizedBox(height: 8),
                 Text(
                   "Hallo, ${controller.useraktif.name} 👋",
@@ -47,6 +58,60 @@ class Homescreen extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
+                      ],
+                    ),
+                    SizedBox(width: 10
+                    ,),
+                    // Place this at the bottom of your Column or as a floating action button
+Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+  child: GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => const ChatPage()),
+      );
+    },
+    child: Container(
+      height: 50,
+      width: 150,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF43CEA2), Color(0xFF185A9D)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            offset: Offset(0, 4),
+            blurRadius: 6,
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Icon(Icons.smart_toy, color: Colors.white),
+          SizedBox(width: 5),
+          Text(
+            "AI Agent",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    ),
+  ),
+),
+                  ],
+                  
+                ),
+                
                 SizedBox(height: 19),
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -280,15 +345,15 @@ class Homescreen extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (context) =>  SettingsScreen()),
         );
-            }else if (index == 2) {
+            }else if (index == 1) {
               Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  ChatPage()),
+          MaterialPageRoute(builder: (context) =>  CalendarPage()),
         );
-              }else if (index==1) {
+              }else if (index==2) {
               Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => GrafikScreen()),
+          MaterialPageRoute(builder: (context) => ChatPage()),
         );
             }else  {
 
@@ -297,7 +362,7 @@ class Homescreen extends StatelessWidget {
           showUnselectedLabels: false,
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Statistik'),
+            BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Plannung'),
             BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'ChatBot'),
             BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Einstellungen'),
           ],

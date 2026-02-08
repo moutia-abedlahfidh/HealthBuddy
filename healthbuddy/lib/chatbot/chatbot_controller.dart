@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:healthbuddy/chatbot/chatbot_screen.dart';
+import 'package:healthbuddy/chatbot/chatbot_service.dart';
 
 class ChatController extends ChangeNotifier {
   final TextEditingController text = TextEditingController();
-
+  chatService service = chatService() ;
   final List<Message> _messages = [];
-
+  bool options_is_opened = false ;
+  int index_question = 0 ;
   int category = 0 ;
 
   final List options = ["Sport", "Ernährung", "Schlaf","Anderes"] ;
@@ -47,29 +49,19 @@ final List<String> options_questions_Schlaf = [
 
   List<Message> get messages => List.unmodifiable(_messages);
 
-  void sendMessage(String text) {
-    if (text.trim().isEmpty) return;
+  void sendMessage() async{
+    if (text.text.trim().isEmpty) return;
 
-    _messages.insert(0, Message(text: text, isUser: true));
+    _messages.insert(0, Message(text: text.text, isUser: true));
     notifyListeners();
-
-    _botReply(text);
+    var response = await service.ResponseChatGpt(text.text);
+    _botReply(response);
   }
 
   Future<void> _botReply(String userText) async {
     await Future.delayed(const Duration(milliseconds: 600));
 
-    String reply;
-
-    if (userText.toLowerCase().contains("hello")) {
-      reply = "Hi 👋 How can I help you?";
-    } else if (userText.toLowerCase().contains("flutter")) {
-      reply = "Flutter is awesome 🚀";
-    } else {
-      reply = "I'm still learning 🤖";
-    }
-
-    _messages.insert(0, Message(text: reply, isUser: false));
+    _messages.insert(0, Message(text: userText, isUser: false));
     notifyListeners();
   }
 
@@ -79,10 +71,11 @@ final List<String> options_questions_Schlaf = [
       text.text = topic;
     }else {
     if (topic == "Sport") {
-     category == 1 ;
+     category = 1 ;
       }else if (topic == "Ernährung") {
+        category = 2 ;
        }else {
-          category == 3 ;
+          category = 3 ;
         }
        notifyListeners();
   }
