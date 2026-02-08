@@ -8,6 +8,8 @@ class KalorienController extends ChangeNotifier {
 
   List<Map<String, dynamic>> foods = [];
 
+  List<dynamic> selectedFoods = [];
+
   final String consumerKey = '12cfb651f1754f0d9d60c57342193cfc';
   final String consumerSecret = 'ec995eb6dffe41f7a1b412b2b8c41cc3';
   final String baseUrl = 'https://platform.fatsecret.com/rest/server.api';
@@ -21,7 +23,14 @@ class KalorienController extends ChangeNotifier {
   //Future<void> connect() async {
   //  await searchFood("monster"); // test call
   //}
-
+    void toggleSelection(dynamic food) {
+    if (selectedFoods.contains(food)) {
+      selectedFoods.remove(food);
+    } else {
+      selectedFoods.add(food);
+    }
+    notifyListeners();
+  }
   /// 🔹 Search for a food by name
   Future<void> searchFood(String query) async {
     final params = {

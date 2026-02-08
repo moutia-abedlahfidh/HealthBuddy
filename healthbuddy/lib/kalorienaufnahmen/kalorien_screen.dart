@@ -139,7 +139,48 @@ class KalorienScreen extends StatelessWidget {
           ],
         )
         );
-        })
+        }),
+        floatingActionButton: Consumer<KalorienController>(
+  builder: (context, controller, _) => FloatingActionButton(
+    backgroundColor: Colors.teal,
+    child: const Icon(Icons.shopping_cart),
+    onPressed: () {
+      if (controller.selectedFoods.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Keine Produkte ausgewählt")),
+        );
+      } else {
+        showModalBottomSheet(
+          context: context,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+          ),
+          builder: (_) => Container(
+            padding: const EdgeInsets.all(16),
+            height: 300,
+            child: ListView.builder(
+              itemCount: controller.selectedFoods.length,
+              itemBuilder: (context, index) {
+                final item = controller.selectedFoods[index];
+                return ListTile(
+                  leading: Image.asset(item['image'], width: 40, height: 40),
+                  title: Text(item['title']),
+                  subtitle: Text(item['kalorien']),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.red),
+                    onPressed: () {
+                      controller.toggleSelection(item);
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      }
+    },
+  ),
+),
       ),
     ) ;
   }
@@ -226,3 +267,4 @@ class KardEssen extends StatelessWidget {
     );
   }
 }
+
