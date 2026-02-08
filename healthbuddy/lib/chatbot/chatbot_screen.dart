@@ -163,7 +163,7 @@ class ChatPage extends StatelessWidget {
             }else if (index == 1) {
               Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  const GrafikScreen()),
+          MaterialPageRoute(builder: (context) =>  GrafikScreen()),
         );
               }else if (index==0) {
               Navigator.push(

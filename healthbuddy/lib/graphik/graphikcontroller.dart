@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:healthbuddy/graphik/graphikservice.dart';
+import 'package:healthbuddy/home/homescreen.dart';
 
 class GraphikController extends ChangeNotifier {
   graphikService service = graphikService() ;
@@ -64,12 +65,4 @@ DateTime parseDate(String dateString) {
       todayKM = thisweek.fold(0.0, (sum, d) => sum + d.km);
       notifyListeners();
 }
-}
-class DailyData {
-  final String day;
-  final int steps;
-  final double calories;
-  final double km ;
-
-  DailyData(this.day, this.steps, this.calories,this.km);
 }

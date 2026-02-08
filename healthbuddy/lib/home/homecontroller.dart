@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:healthbuddy/home/homescreen.dart';
 import 'package:healthbuddy/home/homeservice.dart';
 import 'package:healthbuddy/model/user.dart';
 import 'package:pedometer/pedometer.dart';
@@ -8,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Homecontroller extends ChangeNotifier {
   late Stream<StepCount> _stepCountStream;
   HomeService service = HomeService();
+  final PageController pageController = PageController();
   int steps = 0;
   int _baseline = 0;
   bool isLoading = true ;
@@ -16,6 +18,17 @@ class Homecontroller extends ChangeNotifier {
   double km = 0.0;
   double kcal = 0.0 ;
   userModel useraktif =  userModel();
+
+  List<DailyData> fitnessData = [];
+  List<DailyData> thisweek = [] ;
+
+int totalSteps = 0;
+  double totalCalories = 0.0;
+
+  int todaySteps = 0;
+  double todayCalories = 0.0;
+
+  double todayKM = 0.0;
 
   Homecontroller() {
     _init();
@@ -30,6 +43,7 @@ class Homecontroller extends ChangeNotifier {
   final data = _currentuser.data() as Map<String, dynamic>;
   useraktif = userModel.fromJson(data) ;
   useraktif.userid = uid ;
+  loadSteps();
   isLoading = false ;
   notifyListeners(); 
 
@@ -150,6 +164,45 @@ Future<void> sendNotificationWasseraufnahme() async {
   void onStepCountError(error) {
     print("⚠️ Step count error: $error");
   }
+
+  String getDayName(DateTime date) {
+  const names = ["Mo", "Tu", "Wed", "Thu", "Fr", "Sa", "Su"];
+  return names[date.weekday - 1];
 }
 
-  
+DateTime parseDate(String dateString) {
+  final parts = dateString.split('-'); 
+  final day = int.parse(parts[0]);
+  final month = int.parse(parts[1]);
+  final year = int.parse(parts[2]);
+  return DateTime(year, month, day);
+}
+
+
+  List<DailyData> thisWeekData() {
+      final now = DateTime.now();
+      final sevenDaysAgo = now.subtract(const Duration(days: 7));
+
+      return fitnessData.where((d) {
+        final dayDate = parseDate(d.day); 
+        return dayDate.isAfter(sevenDaysAgo);
+      }).toList();
+    }
+
+
+  void loadSteps() async {
+  var steps = await service.getSteps();
+  for (var s in steps) {
+      fitnessData.add(DailyData(s['date'],s['steps'],double.parse(s['kalorien'].toString()),double.parse(s['km'].toString())));
+    }
+
+      todaySteps = fitnessData.last.steps;
+      todayCalories = fitnessData.last.calories;
+
+      thisweek = thisWeekData() ;
+      totalSteps = thisweek.fold(0, (sum, d) => sum + d.steps);
+      totalCalories = thisweek.fold(0.0, (sum, d) => sum + d.calories);
+      todayKM = thisweek.fold(0.0, (sum, d) => sum + d.km);
+      notifyListeners();
+}
+}

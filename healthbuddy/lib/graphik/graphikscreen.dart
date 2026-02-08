@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:healthbuddy/Home/homescreen.dart';
 import 'package:healthbuddy/chatbot/chatbot_screen.dart';
 import 'package:healthbuddy/graphik/graphikcontroller.dart';
+import 'package:healthbuddy/home/homescreen.dart';
 import 'package:healthbuddy/settings/settings_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -9,7 +9,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 
 class GrafikScreen extends StatelessWidget {
-  const GrafikScreen({super.key});
+   GrafikScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
